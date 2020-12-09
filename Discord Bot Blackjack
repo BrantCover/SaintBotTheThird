@@ -1,0 +1,84 @@
+#---Setup Blackjack---#
+#Dealer Cards
+dealer_cards = []
+
+#Player Cards 
+player_cards = []
+
+#Play Blackjack
+@client.command()
+async def deal(ctx):
+
+    list.clear(player_cards)
+    list.clear(dealer_cards)
+
+    #Deal the dealer cards
+    while len(dealer_cards) !=2:
+        dealer_cards.append(random.randint(1,11))
+        if len(dealer_cards) == 2:
+            await ctx.send(f"The dealer's hand is: [▮  &, {dealer_cards[1]}].")
+
+    #Deal the player cards
+    while len(player_cards) !=2:
+        player_cards.append(random.randint(1,11))
+        if len(player_cards) == 2:
+            time.sleep(1)
+            await ctx.send(f"Your hand is: {player_cards}. Total = " + str(sum(player_cards)))
+
+    #---Dealer wins or loses---#
+    #Dealer
+    if sum(dealer_cards) == 21:
+        await ctx.send("Dealer has 21 and wins.")
+
+    if sum(dealer_cards) > 21:
+        await ctx.send("Dealer has busted.")
+
+    time.sleep(1)
+    await ctx.send(".choice hit or .choice stay?")
+
+    
+
+@client.command()
+async def choice(ctx, *, reply):
+    #Player
+    if sum(player_cards) < 21:
+        time.sleep(1)
+
+        if reply == "hit":
+            player_cards.append(random.randint(1,11))
+            time.sleep(1)
+            await ctx.send(f"Your hand is now: {player_cards}. Total = " + str(sum(player_cards)))
+
+        if reply == "stay":
+            time.sleep(1)
+            await ctx.send(f"The dealer's hand is {dealer_cards}. Total = " + str(sum(dealer_cards)))
+            time.sleep(1)
+            await ctx.send(f"You hold with: {player_cards}. Total = " + str(sum(player_cards)))
+
+                #Dealer hits again
+            while sum(dealer_cards) <= 17:
+                dealer_cards.append(random.randint(1,11))
+                time.sleep(1)
+                await ctx.send(f"Dealer hits, his hand is now: {dealer_cards}. Total = " + str(sum(dealer_cards)))
+
+            time.sleep(1)
+            await ctx.send(f"Dealer stops with {dealer_cards}. Total = " + str(sum(dealer_cards)))
+
+            #Decide Winner
+            if sum(dealer_cards) < 21 > sum(player_cards):
+                time.sleep(1)
+                await ctx.send("The dealer has won.")
+
+            else: 
+                time.sleep(1)
+                await ctx.send("Congrats you win!")
+
+        #Player busts
+    if sum(player_cards) > 21:
+        time.sleep(1)
+        await ctx.send("You've busted, dealer wins. \nRemember, gambling is a sin.")
+
+    #Player gets blackjack
+    elif sum(player_cards) == 21:
+        time.sleep(1)
+        await ctx.send("Blackjack! You Win!")
