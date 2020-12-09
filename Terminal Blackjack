@@ -1,0 +1,114 @@
+import random
+import time
+
+
+#Dealer Cards
+dealer_cards = []
+
+#Player Cards 
+player_cards = []
+
+#Dealer Decider
+dealer_decider = []
+
+#---Deal Cards---#
+#Dealer
+while len(dealer_cards) !=2:
+    dealer_cards.append(random.randint(1,11))
+    if len(dealer_cards) == 2:
+        print(f"The dealer's hand is: [▮  &, {dealer_cards[1]}].")
+
+#Player
+while len(player_cards) !=2:
+    player_cards.append(random.randint(1,11))
+    if len(player_cards) == 2:
+        time.sleep(1)
+        print(f"Your hand is: {player_cards}. Total = " + str(sum(player_cards)))
+
+#---Dealer wins or loses---#
+#Dealer
+if sum(dealer_cards) == 21:
+    print("Dealer has 21 and wins.")
+    quit()
+
+elif sum(dealer_cards) > 21:
+    print("Dealer has busted.")
+
+#Player
+while sum(player_cards) < 21:
+    time.sleep(1)
+    action_taken = str(input("Stay or Hit? "))
+    #Hit 
+    if action_taken == "Hit":
+        player_cards.append(random.randint(1,11))
+        time.sleep(1)
+        print(f"Your hand is now: {player_cards}. Total = " + str(sum(player_cards)))
+
+    #Stay 
+    if action_taken == "Stay":
+        time.sleep(1)
+        print(f"The dealer's hand is {dealer_cards}. Total = " + str(sum(dealer_cards)))
+        time.sleep(1)
+        print(f"You hold with: {player_cards}. Total = " + str(sum(player_cards)))
+
+        #Dealer hits again
+        while sum(dealer_cards) <= 17:
+
+            #If less than 10
+            if sum(dealer_cards) <= 10:
+                dealer_cards.append(random.randint(1,11))
+                time.sleep(1.5)
+                print(f"Dealer hits, his hand is now: {dealer_cards}. Total = " + str(sum(dealer_cards)))
+
+            #If less than 13
+            if sum(dealer_cards) <= 13:
+                dealer_decider.append(random.randint(1,3))
+                #print(f"Dealer thinks {dealer_decider}")
+                if dealer_decider == 1:
+                    dealer_cards.append(random.randint(1,11))
+                    time.sleep(1.5)
+                    print(f"Dealer hits, his hand is now: {dealer_cards}. Total = " + str(sum(dealer_cards)))
+                    list.clear(dealer_decider)
+                else:
+                    list.clear(dealer_decider)
+
+            #If less than 15
+            if sum(dealer_cards) <= 15:
+                dealer_decider.append(random.randint(1,8))
+                #print(f"Dealer thinks {dealer_decider}")
+                if dealer_decider == 1:
+                    dealer_cards.append(random.randint(1,11))
+                    time.sleep(1.5)
+                    print(f"Dealer hits, his hand is now: {dealer_cards}. Total = " + str(sum(dealer_cards)))
+                    list.clear(dealer_decider)
+                else:
+                    time.sleep(1)
+                    print(f"Dealer holds with {dealer_cards}. Total = " + str(sum(dealer_cards)))
+                    break
+            else:
+                break
+
+        #Decide Winner
+        if sum(dealer_cards) > sum(player_cards):
+            time.sleep(1)
+            print("The dealer has won.")
+            break
+        else: 
+            time.sleep(1)
+            print("You have won.")
+            break
+
+    if action_taken == "hit":
+        print("Please capitalize all replies (Stay/Hit)")
+    if action_taken == "stay":
+        print("Please capitalize all replies (Stay/Hit)")
+    
+#Player busts
+if sum(player_cards) > 21:
+    time.sleep(1)
+    print("You've busted, dealer wins.")
+
+#Player gets blackjack
+elif sum(player_cards) == 21:
+    time.sleep(1)
+    print("Blackjack! You Win!")
